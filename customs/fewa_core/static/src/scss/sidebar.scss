@@ -1,0 +1,244 @@
+:root {
+    --fewa-sidebar-width: 70px;
+    --fewa-sidebar-bg: #1e1e2d;
+    --fewa-sidebar-hover: #2b2b40;
+    --fewa-sidebar-accent: #7239ea;
+    --fewa-sidebar-text: #a2a7d3;
+    --fewa-sidebar-active: #ffffff;
+}
+
+#fewa_sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--fewa-sidebar-width);
+    background-color: var(--fewa-sidebar-bg);
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+
+    &.fewa_expanded {
+        --fewa-sidebar-width: 250px;
+
+        .fewa_app_name,
+        .fewa_user_name,
+        .fewa_logout_text {
+            opacity: 1;
+            visibility: visible;
+            display: inline-block;
+        }
+
+        .fewa_sidebar_header {
+            justify-content: space-between;
+            padding: 15px 20px;
+        }
+
+        .fewa_app_item {
+            justify-content: flex-start;
+            padding: 10px 20px;
+            width: calc(100% - 20px);
+            margin: 0 10px;
+        }
+
+        .fewa_sidebar_bottom {
+            align-items: flex-start;
+            padding: 15px 20px;
+        }
+
+        .fewa_user_info {
+            width: 100%;
+        }
+    }
+
+    .fewa_sidebar_header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 0;
+        min-height: 70px;
+
+        .fewa_sidebar_toggle {
+            color: var(--fewa-sidebar-text);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: var(--fewa-sidebar-active);
+            }
+        }
+
+        .fewa_sidebar_logo {
+            display: none;
+
+            img {
+                width: 32px;
+                height: 32px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    &.fewa_expanded .fewa_sidebar_logo {
+        display: block;
+    }
+
+    .fewa_sidebar_apps {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .fewa_app_item {
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            color: var(--fewa-sidebar-text);
+
+            &:hover {
+                background-color: var(--fewa-sidebar-hover);
+                color: var(--fewa-sidebar-active);
+            }
+
+            &.active {
+                background-color: var(--fewa-sidebar-accent);
+                color: var(--fewa-sidebar-active);
+            }
+
+            .fewa_app_icon {
+                min-width: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            .fewa_app_name {
+                margin-left: 10px;
+                font-size: 14px;
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+                transition: opacity 0.3s ease;
+            }
+        }
+    }
+
+    .fewa_sidebar_bottom {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+        .fewa_user_info {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--fewa-sidebar-text);
+
+            .fewa_user_avatar {
+                min-width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                overflow: hidden;
+                border: 2px solid var(--fewa-sidebar-accent);
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .fewa_user_name {
+                margin-left: 12px;
+                font-size: 14px;
+                font-weight: 500;
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+                transition: opacity 0.3s ease;
+            }
+        }
+
+        .fewa_logout_btn {
+            display: flex;
+            align-items: center;
+            color: var(--fewa-sidebar-text);
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            width: 100%;
+            justify-content: center;
+
+            i {
+                min-width: 36px;
+                text-align: center;
+            }
+
+            &:hover {
+                color: #ff5c5c;
+            }
+
+            .fewa_logout_text {
+                margin-left: 12px;
+                font-size: 14px;
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+                transition: opacity 0.3s ease;
+            }
+        }
+    }
+}
+
+// Adjust Odoo layout dynamically
+.o_web_client {
+    &>.o_action_manager {
+        margin-left: var(--fewa-sidebar-width) !important;
+        transition: margin-left 0.3s ease;
+    }
+
+    &>.o_main_navbar {
+        left: var(--fewa-sidebar-width) !important;
+        width: calc(100% - var(--fewa-sidebar-width)) !important;
+        transition: left 0.3s ease, width 0.3s ease;
+        z-index: 1000;
+    }
+}
+
+// Ensure the navbar doesn't hide the sidebar
+.o_main_navbar {
+    background-color: white !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+}
+
+// Hide default apps menu
+.o_navbar_apps_menu {
+    display: none !important;
+}

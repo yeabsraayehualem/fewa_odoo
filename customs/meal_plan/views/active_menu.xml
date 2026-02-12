@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="meal_menu_view_form" model="ir.ui.view">
+        <field name="name">meal.menu.view.form</field>
+        <field name="model">meal.menu</field>
+        <field name="arch" type="xml">
+            <form string="meal Menu">
+            <header>
+<button string="Duplicate" name="duplicate_current" type="object" class="oe_highlight" invisible="active"/>
+            </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="meal_plans" widget="many2many_avatar_user" />
+
+                    </group>
+
+
+                    <notebook>
+                        <page name="meals" string="Meals">
+                            <field name="meals_menu" readonly="1">
+
+
+                                <kanban>
+                                    <field name="meal_id"/>
+                                    <field name="is_active"/>
+                                    <field name="name" />
+                                    <field name="image" />
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click o_company_card">
+                                                <div class="d-flex align-items-start gap-3 p-2">
+                                                    <div class="flex-shrink-0" style="width: 80px; height: 80px;">
+                                                        <t t-if="record.image.raw_value">
+                                                        <field name="image" widget="image" />
+                                                        </t>
+                                                        <t t-else="">
+                                                            <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                                                <i class="fa fa-meal fa-2x text-secondary"/>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+
+                                                    <div class="flex-grow-1 min-w-0">
+                                                        <div class="mb-2">
+                                                            <strong class="fs-5 text-dark d-block">
+                                                                <t t-esc="record.name.raw_value "/>
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-shrink-0">
+                                                        <button type="object" name="deactivate" class="btn btn-sm btn-success" invisible="not is_active">
+                                                            <i class="fa fa-check"/>
+                                                        </button>
+                                                        <button type="object" name="activate" class="btn btn-sm border" invisible="is_active">
+                                                            <i class="fa border"/>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+
+
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="image" widget="image" class="w-25" />
+
+                                        </group>
+
+                                    </sheet>
+
+
+                                </form>
+
+
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="meal_menu_view_kanban" model="ir.ui.view">
+        <field name="name">meal.menu.view.kanban</field>
+        <field name="model">meal.menu</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="active_meals" />
+                <field name="inactive_meals" />
+                <field name="date" />
+
+                <templates>
+
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_company_card">
+                            <div class="d-flex align-items-start gap-3 p-2">
+                                <div class="flex-shrink-0" style="width: 80px; height: 80px;">
+
+                                    <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                        <i class="fa fa-list fa-2x text-secondary"/>
+                                    </div>
+
+                                </div>
+
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="mb-2">
+                                        <strong class="fs-5 text-dark d-block">
+                                            <t t-esc="record.date.value"/>
+                                        </strong>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <strong class="fs-5 text-success d-block">
+                                            <span>
+                                                <i class="fa fa-meal text-success"></i>
+                                            </span>
+                                            <t t-esc="record.active_meals.value"/>
+                                            <span> Active Meals</span>
+                                        </strong>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong class="fs-5 text-danger d-block">
+                                            <span>
+                                                <i class="fa fa-meal text-danger"></i>
+                                            </span>
+                                            <t t-esc="record.inactive_meals.value"/>
+                                            <span> inactive Meals</span>
+                                        </strong>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+<record id="meal_menu_view_search" model="ir.ui.view">
+    <field name="name">meal.menu.view.search</field>
+    <field name="model">meal.menu</field>
+    <field name="arch" type="xml">
+        <search>
+
+            <!-- Normal Filters (top bar) -->
+            <filter name="active"
+                    string="Active"
+                    domain="[('active','=',True)]"/>
+
+            <filter name="inactive"
+                    string="Inactive"
+                    domain="[('active','=',False)]"/>
+
+            <separator/>
+
+            <!-- <searchpanel>
+                <field name="active"
+                       string="Status"/>
+            </searchpanel> -->
+
+        </search>
+    </field>
+</record>
+
+
+    <record id="meal_menus_action" model="ir.actions.act_window">
+        <field name="name">Meal Menu</field>
+        <field name="res_model">meal.menu</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+            <field name="search_view_id" ref="meal_menu_view_search"/>
+
+        <field name="help" type="html">
+            <p class="oe_nocontent_smile">No Meal Plan</p>
+
+        </field>
+    </record>
+</odoo>

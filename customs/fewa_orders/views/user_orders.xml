@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- FORM VIEW -->
+    <record id="fewa_user_orders_view_form" model="ir.ui.view">
+        <field name="name">fewa.user.orders.view.form</field>
+        <field name="model">fewa.user.orders</field>
+        <field name="arch" type="xml">
+            <form string="Order Details">
+                <header>
+                    <button name="action_accept_order" type="object" string="Accept Order" class="btn btn-primary" invisible="status != 'draft'"/>
+                    <button name="action_ready_order" type="object" string="Mark as Ready" class="btn btn-warning" invisible="status != 'accepted'"/>
+                    <button name="action_ondelivery_order" type="object" string="On Delivery" class="btn btn-info" invisible="status != 'ready'"/>
+                    <button name="action_delivered_order" type="object" string="Delivered" class="btn btn-success" invisible="status != 'ondelivery'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,accepted,ready,ondelivery,delivered"/>
+                </header>
+                <sheet>
+                    <field name="meal_image" widget="image" class="oe_avatar" readonly="1"/>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="plan_id" readonly="1"/>
+                            <field name="meal_id" readonly="1"/>
+                            <field name="ordered_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="order_from" readonly="1"/>
+                            <field name="assigned_driver"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- KANBAN VIEW (Native multi-select via Ctrl+Click - NO special attributes needed) -->
+    <record id="fewa_user_orders_view_kanban" model="ir.ui.view">
+        <field name="name">fewa.user.orders.view.kanban</field>
+        <field name="model">fewa.user.orders</field>
+        <field name="arch" type="xml">
+            <kanban  class="o_kanban_small">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="meal_id"/>
+                <field name="status"/>
+                <field name="ordered_date"/>
+                <field name="order_from"/>
+                <field name="assigned_driver"/>
+                <field name="meal_image"/>
+                <field name="plan_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title" t-esc="record.name.value"/>
+                                    <small class="text-muted" t-esc="record.ordered_date.value"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body mt-2">
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0" style="width: 60px; height: 60px;">
+                                        <t t-if="record.meal_image &amp;&amp; record.meal_image.raw_value">
+                                            <field name="meal_image" widget="image" class="o_kanban_image"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                                <i class="fa fa-utensils fa-lg text-secondary"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <div class="flex-grow-1 min-w-0">
+                                        <div class="fw-bold mb-1" t-esc="record.meal_id.value"/>
+                                        <small class="text-muted d-block" t-esc="record.order_from.value"/>
+                                        <small class="text-muted" t-if="record.plan_id.value">Plan: <t t-esc="record.plan_id.value"/></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom mt-2 pt-2 border-top">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <t t-if="record.status.value == 'draft'" class="badge bg-secondary">Draft</t>
+                                        <t t-if="record.status.value == 'accepted'" class="badge bg-primary">Accepted</t>
+                                        <t t-if="record.status.value == 'ready'" class="badge bg-warning text-dark">Ready</t>
+                                        <t t-if="record.status.value == 'ondelivery'" class="badge bg-info text-dark">On Delivery</t>
+                                        <t t-if="record.status.value == 'delivered'" class="badge bg-success">Delivered</t>
+                                    </span>
+                                    <t t-if="record.assigned_driver.value">
+                                        <small class="text-muted">
+                                            <i class="fa fa-user"/> <t t-esc="record.assigned_driver.value"/>
+                                        </small>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+<record id="fewa_user_orders_view_list" model="ir.ui.view">
+    <field name="name">fewa.user.orders.view.list</field>
+    <field name="model">fewa.user.orders</field>
+    <field name="arch" type="xml">
+        <list string="User Orders">
+            <field name="meal_image" widget="image" class="w-25" />
+            <field name="meal_id" />
+            <field name="plan_id" />
+            <field name="status" /> 
+        </list>
+    </field>
+</record>
+   
+    <record id="fewa_user_orders_view_search" model="ir.ui.view">
+        <field name="name">fewa.user.orders.search</field>
+        <field name="model">fewa.user.orders</field>
+        <field name="arch" type="xml">
+            <search string="Search Orders">
+                <field name="name" string="Reference"/>
+                <field name="meal_id" string="Meal"/>
+                <field name="order_from" string="Caterer"/>
+                <field name="assigned_driver" string="Driver"/>
+                <field name="status" string="Status"/>
+                <separator/>
+                <filter name="filter_today" string="Today" domain="[('ordered_date','=',context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_week" string="This Week" domain="[('ordered_date','&gt;=',(context_today()-datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
+                    <filter name="group_by_meal" string="Meal" context="{'group_by':'meal_id'}"/>
+                    <filter name="group_by_caterer" string="Caterer" context="{'group_by':'order_from'}"/>
+                    <filter name="group_by_driver" string="Driver" context="{'group_by':'assigned_driver'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- BULK ACTIONS (Server Actions) -->
+    <record id="action_bulk_accept_orders" model="ir.actions.server">
+        <field name="name">✓ Bulk Accept Orders</field>
+        <field name="model_id" ref="model_fewa_user_orders"/>
+        <field name="binding_model_id" ref="model_fewa_user_orders"/>
+        <field name="state">code</field>
+        <field name="code">
+for order in records.filtered(lambda o: o.status == 'draft'):
+    order.action_accept_order()
+count = len(records.filtered(lambda o: o.status == 'draft'))
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'display_notification',
+    'params': {
+        'title': 'Success',
+        'message': f'{count} order(s) accepted!',
+        'type': 'success',
+        'sticky': False,
+    }
+}
+        </field>
+    </record>
+
+    <record id="action_bulk_ready_orders" model="ir.actions.server">
+        <field name="name">✓ Bulk Mark as Ready</field>
+        <field name="model_id" ref="model_fewa_user_orders"/>
+        <field name="binding_model_id" ref="model_fewa_user_orders"/>
+        <field name="state">code</field>
+        <field name="code">
+for order in records.filtered(lambda o: o.status == 'accepted'):
+    order.action_ready_order()
+count = len(records.filtered(lambda o: o.status == 'accepted'))
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'display_notification',
+    'params': {
+        'title': 'Success',
+        'message': f'{count} order(s) marked as ready!',
+        'type': 'success',
+        'sticky': False,
+    }
+}
+        </field>
+    </record>
+
+    
+
+    <record id="fewa_user_orders_action" model="ir.actions.act_window">
+        <field name="name">All Orders</field>
+        <field name="res_model">fewa.user.orders</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="fewa_user_orders_view_search"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smile">No orders found</p>
+            <p>Create your first order to get started.</p>
+        </field>
+    </record>
+
+</odoo>  

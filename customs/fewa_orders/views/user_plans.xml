@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- FORM VIEW -->
+    <record id="fewa_user_meal_plan_view_form" model="ir.ui.view">
+        <field name="name">fewa.user.meal.plan.view.form</field>
+        <field name="model">fewa.user.meal.plan</field>
+        <field name="arch" type="xml">
+            <form string="User Meal Plan">
+                <header>
+                    <button string="Activate" name="action_activate" type="object" class="btn btn-success" invisible="status != 'draft'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="user_id"/>
+                           
+                            <field name="ordered"/>
+                               <field name="remaining"/>
+                        </group>
+                        <group>
+                         <field name="activated_date"/>
+                            <field name="expiration_date"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="orders" string="Orders">
+                            <field name="orders">
+                                <kanban>
+                                    <field name="meal_image"/>
+                                    <field name="meal_id"/>
+                                    <field name="status"/>
+                                    <field name="ordered_date"/>
+                                    <field name="order_from"/>
+                                    <field name="assigned_driver"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_click o_company_card">
+                                                <div class="d-flex align-items-start gap-3 p-2">
+                                                    <!-- Meal Image -->
+                                                    <div class="flex-shrink-0" style="width: 80px; height: 80px;">
+                                                        <t t-if="record.meal_image &amp;&amp; record.meal_image.raw_value">
+                                                            <field name="meal_image" widget="image"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                                                <i class="fa fa-utensils fa-2x text-secondary"/>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+
+                                                    <!-- Meal Info -->
+                                                    <div class="flex-grow-1 min-w-0">
+                                                        <strong class="fs-6 d-block" t-esc="record.meal_id.value"/>
+                                                        <small t-esc="record.order_from.value"/>
+                                                        <div>
+                                                            <span class="badge bg-info text-dark" t-esc="record.status.value"/>
+                                                            <span class="text-muted ms-2" t-esc="record.ordered_date.value"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- KANBAN VIEW -->
+    <record id="fewa_user_meal_plan_view_kanban" model="ir.ui.view">
+        <field name="name">fewa.user.meal.plan.view.kanban</field>
+        <field name="model">fewa.user.meal.plan</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="status"/>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="activated_date"/>
+                <field name="expiration_date"/>
+                <field name="ordered"/>
+                <field name="image"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_company_card">
+                            <div class="d-flex align-items-start gap-3 p-2">
+                                <div class="flex-shrink-0" style="width: 80px; height: 80px;">
+                                    <t t-if="record.image &amp;&amp; record.image.raw_value">
+                                        <field name="image" widget="image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                            <i class="fa fa-user fa-2x text-secondary"/>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="mb-2">
+                                        <strong class="fs-5 text-dark d-block" t-esc="record.name.value"/>
+                                        <small t-esc="record.user_id.value"/>
+                                    </div>
+                                </div>
+
+                                <div class="flex-shrink-0">
+                                    <button type="object" name="action_activate" class="btn btn-sm btn-success" invisible="status != 'draft'">
+                                        <i class="fa fa-check"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- SEARCH VIEW -->
+    <record id="fewa_user_meal_plan_view_search" model="ir.ui.view">
+        <field name="name">fewa.user.meal.plan.search</field>
+        <field name="model">fewa.user.meal.plan</field>
+        <field name="arch" type="xml">
+            <search>
+                <searchpanel>
+                    <field name="name" string="Meal Plan"/>
+                    <field name="company_id" string="Company"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="fewa_user_meal_plan_action" model="ir.actions.act_window">
+        <field name="name">User Meal Plans</field>
+        <field name="res_model">fewa.user.meal.plan</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="fewa_user_meal_plan_view_search"/>
+        <field name="help" type="html">
+            <p class="o_nocontent_smile">No user meal plans found</p>
+        </field>
+    </record>
+
+    
+</odoo>

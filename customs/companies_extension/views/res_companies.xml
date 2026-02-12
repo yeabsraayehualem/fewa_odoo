@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_company_form_custom" model="ir.ui.view">
+        <field name="name">view.company.form.custom</field>
+        <field name="model">res.company</field>
+
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button name="action_activate" type="object" string="Activate" class="btn btn-success" icon="fa fa-check" invisible="active"/>
+                    <button name="action_deactivate" type="object" string="Deactivate" class="btn btn-danger" icon="fa fa-times" invisible="not active"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_all_company_branches" type="object" invisible="not all_child_ids" icon="fa-sitemap" string="Branches"/>
+                    </div>
+                    <field name="logo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. My Company"/>
+                        </h1>
+                    </div>
+                    <group>
+
+                        <group>
+                            <field name="business_type"/>
+                            <field name="vat" />
+                            <field name = "email" />
+                            <field name="phone" />
+                            <field name="caterer_id" groups="base.group_system" invisible="business_type !='customer'"/>
+                            <field name="delivery_id" groups="base.group_system" invisible="business_type !='caterer'"/>
+
+
+
+                        </group>
+                        <group>
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook  groups="base.group_system" invisible="business_type !='caterer'">
+                        <page name="customers" string="Customers">
+                            <field name="cusotmers">
+                                <kanban>
+                                    <field name="logo" />
+                                    <field name="name" />
+                                    <field name="email" />
+                                    <field name="phone" />
+                                    <templates>
+                                        <t t-name="kanban-box">
+
+                                            <div class="oe_kanban_global_click o_company_card">
+                                                <div class="d-flex align-items-start gap-3 p-2">
+                                                    <div class="flex-shrink-0" style="width: 80px; height: 80px;">
+                                                        <t t-if="record.logo.raw_value">
+                                                            <field name="logo" widget="image" />
+                                                        </t>
+                                                        <t t-else="">
+                                                            <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                                                <i class="fa fa-meal fa-2x text-secondary"/>
+                                                            </div>
+                                                        </t>
+                                                    </div>
+
+                                                    <div class="flex-grow-1 min-w-0">
+                                                        <div class="mb-2">
+                                                            <strong class="fs-5 text-dark d-block">
+                                                                <t t-esc="record.name.raw_value "/>
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                        </t>
+                                    </templates>
+
+
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!-- <chatter /> -->
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_company_kanban_custom" model="ir.ui.view">
+        <field name="name">res.company.kanban.custom</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <kanban class="o_company_kanban" default_order="name">
+                <!-- Declare all fields used in template -->
+                <field name="name"/>
+                <field name="logo"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="street"/>
+                <field name="active"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+
+                        <div class="oe_kanban_global_click o_company_card">
+
+
+                            <!-- Ribbon for Active status (optional) -->
+                            <t t-if="record.active.raw_value">
+                                <div class="o_widget o_widget_web_ribbon">
+                                    <div class="ribbon ribbon-top-right">
+                                        <span class="text-bg-success" title="">Active</span>
+                                    </div>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="o_widget o_widget_web_ribbon">
+                                    <div class="ribbon ribbon-top-right">
+                                        <span class="text-bg-danger" title="">Pending</span>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="d-flex align-items-start gap-3 p-2">
+
+                                <div class="flex-shrink-0" style="width: 80px; height: 80px;">
+                                    <t t-if="record.logo.raw_value">
+                                        <img t-att-src="kanban_image('res.company', 'logo', record.id.raw_value)" alt="Company Logo" class="w-100 h-100 object-fit-contain border rounded"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="w-100 h-100 bg-light border rounded d-flex align-items-center justify-content-center">
+                                            <i class="fa fa-building fa-2x text-secondary"/>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Details (Right) -->
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="mb-2">
+                                        <strong class="fs-5 text-dark d-block">
+                                            <t t-esc="record.name.value"/>
+                                        </strong>
+                                    </div>
+
+                                    <div class="text-muted small">
+                                        <t t-if="record.email.raw_value">
+                                            <div class="mb-1">
+                                                <i class="fa fa-envelope me-1"/>
+                                                <field name="email" widget="email"/>
+                                            </div>
+                                        </t>
+
+                                        <t t-if="record.phone.raw_value">
+                                            <div class="mb-1">
+                                                <i class="fa fa-phone me-1"/>
+                                                <field name="phone" />
+                                            </div>
+                                        </t>
+
+                                        <t t-if="record.street.raw_value">
+                                            <div class="mb-1">
+                                                <i class="fa fa-map-marker me-1"/>
+                                                <t t-esc="record.street.value"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="res_company_view_tree_custom" model="ir.ui.view">
+        <field name="name">res.company.view.list.custom</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="name"/>
+                <field name="business_type"/>
+                <field name="vat"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="street"/>
+                <field name="city"/>
+
+            </list>
+        </field>
+    </record>
+
+
+    <record id="res_company_action_activate_multiple" model="ir.actions.server">
+        <field name="name">Activate Multiple</field>
+        <field name="model_id" ref="base.model_res_company"/>
+        <field name="binding_model_id" ref="base.model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">action = env['res.company'].action_activate_multiple()</field>
+    </record>
+
+    <record id="res_company_action_deactivate_multiple" model="ir.actions.server">
+        <field name="name">Deactivate Multiple</field>
+        <field name="model_id" ref="base.model_res_company"/>
+        <field name="binding_model_id" ref="base.model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">action = env['res.company'].action_deactivate_multiple()</field>
+    </record>
+
+    <record id="res_company_action_caterers" model="ir.actions.act_window">
+        <field name="name">Caterers</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+         (0,0,{'view_mode': 'kanban','view_id': ref('view_res_company_kanban_custom')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('res_company_view_tree_custom')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_company_form_custom')})
+           
+            ]"/>
+        <field name="domain">[('business_type', '=', 'caterer')]</field>
+        <field name="context">{'default_business_type': 'caterer'}</field>
+    </record>
+
+
+
+    <record id="res_company_action_customers" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+         (0,0,{'view_mode': 'kanban','view_id': ref('view_res_company_kanban_custom')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('res_company_view_tree_custom')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_company_form_custom')})
+           
+            ]"/>
+        <field name="domain">[('business_type', '=', 'customer'),('active','=',True)]</field>
+        <field name="context">{'default_business_type': 'customer','default_active': False}</field>
+    </record>
+
+
+
+    <record id="res_company_action_pending_customers" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+         (0,0,{'view_mode': 'kanban','view_id': ref('view_res_company_kanban_custom')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('res_company_view_tree_custom')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_company_form_custom')})
+           
+            ]"/>
+        <field name="domain">[('business_type', '=', 'customer'),('active','=',False)]</field>
+        <field name="context">{'default_business_type': 'customer','default_active': False}</field>
+    </record>
+
+
+
+    <record id="res_company_action_delivery" model="ir.actions.act_window">
+        <field name="name">Delivery</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+         (0,0,{'view_mode': 'kanban','view_id': ref('view_res_company_kanban_custom')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('res_company_view_tree_custom')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_company_form_custom')})
+           
+            ]"/>
+        <field name="domain">[('business_type', '=', 'delivery')]</field>
+        <field name="context">{'default_business_type': 'delivery'}</field>
+    </record>
+
+
+
+
+
+
+    <menuitem id="customers_root_menu" name="Companies" sequence="10" web_icon="companies_extension,static/src/img/companies.png"/>
+    <menuitem id="customers_active" name="Active" action="res_company_action_customers" sequence="10" parent="customers_root_menu"/>
+    <menuitem id="customers_pending" name="Pending" action="res_company_action_pending_customers" sequence="20" parent="customers_root_menu"/>
+
+    <menuitem id="caterers_root_menu" name="Caterers  " action="res_company_action_caterers" sequence="20" web_icon="companies_extension,static/src/img/caterer.png"/>
+    <menuitem id="delivery_root_menu" name="Delivery  " action="res_company_action_delivery" sequence="30" web_icon="companies_extension,static/src/img/customers.png"/>
+</odoo>

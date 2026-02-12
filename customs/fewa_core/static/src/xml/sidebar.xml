@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="web.NavBar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//nav" position="after">
+            <div id="fewa_sidebar" class="d-none d-md-flex" t-att-class="{ 'fewa_expanded': state.isSidebarExpanded }">
+                <!-- Toggle & Logo -->
+                <div class="fewa_sidebar_header">
+                    <div class="fewa_sidebar_toggle" t-on-click="toggleSidebar">
+                        <i class="fa fa-bars"/>
+                    </div>
+                    <div class="fewa_sidebar_logo">
+                        <img t-attf-src="/web/binary/company_logo" alt="Logo"/>
+                    </div>
+                </div>
+
+                <!-- Apps List -->
+                <div class="fewa_sidebar_apps">
+                    <t t-foreach="menuService.getApps()" t-as="app" t-key="app.id">
+                        <div class="fewa_app_item" t-on-click="() => this.onNavBarDropdownItemSelection(app)" t-att-class="{ 'active': currentApp and currentApp.id === app.id }">
+                            <div class="fewa_app_icon">
+                                <img t-if="app.webIconData" t-att-src="app.webIconData" t-att-alt="app.name"/>
+                            </div>
+                            <span class="fewa_app_name" t-esc="app.name"/>
+                            <div class="fewa_app_tooltip" t-esc="app.name"/>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Bottom Section: User & Logout -->
+                <div class="fewa_sidebar_bottom">
+                    <div class="fewa_user_info" t-on-click="() => this.onNavBarDropdownItemSelection({id: 'user_menu'})">
+                        <div class="fewa_user_avatar">
+                            <img t-if="env.services.user" t-attf-src="/web/image?model=res.users&amp;id={{env.services.user.userId}}&amp;field=avatar_128" alt="User"/>
+                        </div>
+                        <span class="fewa_user_name" t-if="env.services.user" t-esc="env.services.user.name"/>
+                    </div>
+                    <a href="/web/session/logout" class="fewa_logout_btn" title="Logout">
+                        <i class="fa fa-sign-out"/>
+                        <span class="fewa_logout_text">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

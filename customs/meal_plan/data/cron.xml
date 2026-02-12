@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_archive_old_meal_menus" model="ir.cron">
+        <field name="name">Archive Old Meal Menus</field>
+        <field name="model_id" ref="model_meal_menu"/>
+        <field name="state">code</field>
+        <field name="code">model.archive_not_today()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
+
+

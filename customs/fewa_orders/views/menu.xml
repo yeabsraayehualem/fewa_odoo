@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="customer_plans_menu" name="Customer Plans" action="fewa_user_meal_plan_action" web_icon="fewa_orders,static/src/img/package.png" sequence="60"/>
+    <menuitem id="menu_fewa_orders" name="Orders" action="fewa_user_orders_action" web_icon="fewa_orders,static/src/img/orders.png" sequence="70"/>
+
+</odoo>

@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5300:5432"
+    restart: always
+    networks:
+      - odoo_net
+   
+
+  odoo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fewa_odoo
+    ports:
+      - "2300:8069"
+    depends_on:
+      postgres:
+        condition: service_started
+       
+    volumes:
+      - ./erpdata:/var/lib/odoo
+    networks:
+      - odoo_net
+    restart: always
+
+networks:
+  odoo_net:
+    driver: bridge
