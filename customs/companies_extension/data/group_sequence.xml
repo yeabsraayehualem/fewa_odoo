@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record id="res_company_group_name" model="ir.sequence">
+            <field name="name">res.company.group.name</field>
+            <field name="code">res.company.group.name</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">GR</field>
+            <field name="padding">3</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+    </data>
+
+</odoo>

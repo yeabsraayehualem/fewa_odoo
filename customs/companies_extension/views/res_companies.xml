@@ -10,7 +10,7 @@
                 <header>
                     <button name="action_activate" type="object" string="Activate" class="btn btn-success" icon="fa fa-check" invisible="active"/>
                     <button name="action_deactivate" type="object" string="Deactivate" class="btn btn-danger" icon="fa fa-times" invisible="not active"/>
-
+<button string="Set Group Name" name="set_group_name" type="object" class="oe_highlight" invisible="group_name"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -22,7 +22,9 @@
                         <h1>
                             <field name="name" placeholder="e.g. My Company"/>
                         </h1>
+                        
                     </div>
+                    <field name="group_name" readonly="1"/>
                     <group>
 
                         <group>
@@ -110,6 +112,7 @@
                 <field name="phone"/>
                 <field name="street"/>
                 <field name="active"/>
+                 <field name="group_name" />
 
                 <templates>
                     <t t-name="kanban-box">
@@ -150,6 +153,11 @@
                                     <div class="mb-2">
                                         <strong class="fs-5 text-dark d-block">
                                             <t t-esc="record.name.value"/>
+                                        </strong>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong class="fs-5 text-dark d-block">
+                                            <t t-esc="record.group_name.value"/>
                                         </strong>
                                     </div>
 

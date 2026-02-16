@@ -42,8 +42,7 @@ class FewaUsersMealPlan(models.Model):
             explan.status = 'expired'
             explan.expiration_date = fields.Date.today()
 
-
-
+    
 
 class FewaUserOrders(models.Model):
     _name="fewa.user.orders"
@@ -51,7 +50,7 @@ class FewaUserOrders(models.Model):
 
 
     name = fields.Char(string="Ref No.")
-    plan_id = fields.Many2one('fewa.user.meal.plan',stiring="Order Package")
+    plan_id = fields.Many2one('fewa.user.meal.plan',string="Order Package")
     meal_id = fields.Many2one('fewa.meals',string="Meal")
     ordered_date = fields.Date(string="Ordered Date", default = fields.Date.today())
     order_from = fields.Many2one("res.company",string="Caterer",domain=[('business_type','=','caterer')])
@@ -59,6 +58,7 @@ class FewaUserOrders(models.Model):
     status = fields.Selection([(i,i.capitalize()) for i in ['draft','accepted','ready','ondelivery','delivered']],string="Status", default="draft" )
     meal_image = fields.Binary(related="meal_id.image")
     company_id = fields.Many2one('res.company',string="Company")
+    collection_id = fields.Many2one('fewa.order.collection',string="Collection")
 
     def action_accept_order(self):
         for rec in self:
@@ -79,3 +79,16 @@ class FewaUserOrders(models.Model):
         for rec in self:
             rec.status = 'delivered'
 
+    def create(self,vals):
+        if not vals.get('name', False):
+            vals['name'] = self.env['ir.sequence'].next_by_code('fewa.user.meal.plan') or '/'
+        plan = self.env['fewa.user.meal.plan'].search([('id','=',vals['plan_id'])],limit=1)
+        user = plan.user_id
+        collection_id = self.env['fewa.order.collection'].search([('order_date','=',vals['ordered_date']),('company_id','=',user.company_id.id)],limit=1)
+        if not collection_id:
+            collection_id = self.env['fewa.order.collection'].create({
+                "order_date":vals['ordered_date'],
+                "company_id":user.company_id.id,
+            })
+        vals['collection_id'] = collection_id.id
+        return super(FewaUserOrders, self).create(vals)

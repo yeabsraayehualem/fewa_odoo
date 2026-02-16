@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_fewa_user_meal_plan,access fewa user meal_plan,model_fewa_user_meal_plan,base.group_user,1,1,1,1
 access_fewa_fewa_user_orders,access fewa user meal_plan,model_fewa_user_orders,base.group_user,1,1,1,1
+access_fewa_order_collection,access fewa order collection,model_fewa_order_collection,base.group_user,1,1,1,1

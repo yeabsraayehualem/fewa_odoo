@@ -17,6 +17,12 @@ class ResCompany(models.Model):
     caterer_id = fields.Many2one('res.company',domain = [('business_type','=','caterer')])
     cusotmers= fields.One2many('res.company','caterer_id')
     delivery_id = fields.Many2one('res.company',domain = [('business_type','=','delivery')])
+    group_name = fields.Char(string="Group Name",default = lambda self: self._generate_group_name())
+    
+
+    def _generate_group_name(self):
+        return self.env['ir.sequence'].next_by_code('res.company.group.name')
+
 
     @api.onchange('business_type')
     def onchange_business_type(self):
@@ -43,3 +49,10 @@ class ResCompany(models.Model):
     def action_deactivate_multiple(self):
         for rec in self:
             rec.active = False
+
+    
+
+    def set_group_name(self):
+        comps = self.env['res.company'].search([('business_type', '=', 'customer'),('group_name','=',False)])
+        for rec in comps:
+            rec.group_name = rec._generate_group_name()

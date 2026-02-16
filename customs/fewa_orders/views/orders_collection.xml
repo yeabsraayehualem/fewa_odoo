@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fewa_order_collection_view_tree" model="ir.ui.view">
+        <field name="name">fewa.order.collection.view.tree</field>
+        <field name="model">fewa.order.collection</field>
+        <field name="arch" type="xml">
+            <list string="Orders">
+                <field name="name"/>
+                <field name="order_date"/>
+                <field name="group_name"/>
+                <field name="order_line" string="Order Records"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fewa_order_collection_view_form" model="ir.ui.view">
+        <field name="name">fewa.order.collection.view.form</field>
+        <field name="model">fewa.order.collection</field>
+        <field name="arch" type="xml">
+            <form string="Order Collection">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="order_date"/>
+                        <field name="group_name"/>
+                    </group>
+                    <notebook>
+                        <page name="order_line" string="Order Records">
+                            <field name="order_line" readonly="1">
+                                <list>
+                                    <field name="meal_image" widget="image" class="oe_avatar w-25"/>
+                                    <field name="meal_id"/>
+
+
+
+                                </list>
+
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_fewa_order_collection" model="ir.actions.act_window">
+        <field name="name">Fewa Order Collection</field>
+        <field name="res_model">fewa.order.collection</field>
+        <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_filter_today': 1}</field>
+
+        <field name="domain">[]</field>
+    </record>
+
+
+</odoo>

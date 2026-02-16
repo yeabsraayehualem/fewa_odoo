@@ -4,7 +4,8 @@
     "author":"Yoraki",
     "depends":["base","mail"],
     "data": [
-        "views/res_companies.xml"
+        "views/res_companies.xml",
+        "data/group_sequence.xml"
     ],
     "assets": {
         "web.assets_backend": [

@@ -14,18 +14,18 @@
                     <field name="status" widget="statusbar" statusbar_visible="draft,accepted,ready,ondelivery,delivered"/>
                 </header>
                 <sheet>
-                    <field name="meal_image" widget="image" class="oe_avatar" readonly="1"/>
+                    <field name="meal_image" widget="image" class="oe_avatar" />
                     <div class="oe_title">
-                        <h1><field name="name" readonly="1"/></h1>
+                        <h1><field name="name" /></h1>
                     </div>
                     <group>
                         <group>
-                            <field name="plan_id" readonly="1"/>
-                            <field name="meal_id" readonly="1"/>
-                            <field name="ordered_date" readonly="1"/>
+                            <field name="plan_id" />
+                            <field name="meal_id" />
+                            <field name="ordered_date" />
                         </group>
                         <group>
-                            <field name="order_from" readonly="1"/>
+                            <field name="order_from" />
                             <field name="assigned_driver"/>
                         </group>
                     </group>
