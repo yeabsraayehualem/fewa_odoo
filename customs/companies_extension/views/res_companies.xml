@@ -294,10 +294,10 @@
 
 
 
-    <menuitem id="customers_root_menu" name="Companies" sequence="10" web_icon="companies_extension,static/src/img/companies.png"/>
-    <menuitem id="customers_active" name="Active" action="res_company_action_customers" sequence="10" parent="customers_root_menu"/>
-    <menuitem id="customers_pending" name="Pending" action="res_company_action_pending_customers" sequence="20" parent="customers_root_menu"/>
+    <menuitem id="customers_root_menu" name="Companies" sequence="10" web_icon="companies_extension,static/src/img/companies.png" groups="user_type.group_fewa_user"/>
+    <menuitem id="customers_active" name="Active" action="res_company_action_customers" sequence="10" parent="customers_root_menu" groups="user_type.group_fewa_user"/>
+    <menuitem id="customers_pending" name="Pending" action="res_company_action_pending_customers" sequence="20" parent="customers_root_menu" groups="user_type.group_fewa_user"/>
 
-    <menuitem id="caterers_root_menu" name="Caterers  " action="res_company_action_caterers" sequence="20" web_icon="companies_extension,static/src/img/caterer.png"/>
-    <menuitem id="delivery_root_menu" name="Delivery  " action="res_company_action_delivery" sequence="30" web_icon="companies_extension,static/src/img/customers.png"/>
+    <menuitem id="caterers_root_menu" name="Caterers  " action="res_company_action_caterers" sequence="20" web_icon="companies_extension,static/src/img/caterer.png" groups="user_type.group_fewa_user"/>
+    <menuitem id="delivery_root_menu" name="Delivery  " action="res_company_action_delivery" sequence="30" web_icon="companies_extension,static/src/img/customers.png" groups="user_type.group_fewa_user"/>
 </odoo>

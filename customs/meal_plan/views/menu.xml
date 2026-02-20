@@ -3,14 +3,14 @@
 
     <menuitem id="fewa_meal_plan_root_menu" name="Meal Plan" web_icon="meal_plan,static/src/img/meal_plan.png" sequence="40"/>
 
-    <menuitem id="meal_plan_menu" name="Meal Plan" action="fewa_meal_plan_action" parent="fewa_meal_plan_root_menu" sequence="10"/>
+    <menuitem id="meal_plan_menu" name="Meal Plan" action="fewa_meal_plan_action" parent="fewa_meal_plan_root_menu" sequence="10" groups="user_type.group_fewa_user"/>
 
 
-    <menuitem id="meals_menu" name="Meals" action="fewa_meals_action" parent="fewa_meal_plan_root_menu" sequence="20"/>
+    <menuitem id="meals_menu" name="Meals" action="fewa_meals_action" parent="fewa_meal_plan_root_menu" sequence="20" groups="user_type.group_fewa_user"/>
 
 
 
 
-    <menuitem id="fewa_meal_menu_root_menu" name="Meal Menu" action="meal_menus_action" web_icon="meal_plan,static/src/img/meal_menu.png" sequence="50"/>
+    <menuitem id="fewa_meal_menu_root_menu" name="Meal Menu" action="meal_menus_action" web_icon="meal_plan,static/src/img/meal_menu.png" sequence="50" groups="user_type.group_fewa_user,user_type.group_fewa_caterer" />
 
 </odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Fewa Staff: can see ALL meal menus from every company -->
+    <record id="meal_menu_rule_fewa_user" model="ir.rule">
+        <field name="name">Meal Menu: Fewa Staff See All</field>
+        <field name="model_id" ref="model_meal_menu"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_user'))]"/>
+    </record>
+
+    <!-- Caterer: can only see meal menus from their own company -->
+    <record id="meal_menu_rule_caterer" model="ir.rule">
+        <field name="name">Meal Menu: Caterer Own Company Only</field>
+        <field name="model_id" ref="model_meal_menu"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_caterer'))]"/>
+    </record>
+
+    <!-- Fewa Staff: can see ALL active meals from every company -->
+    <record id="active_meals_rule_fewa_user" model="ir.rule">
+        <field name="name">Active Meals: Fewa Staff See All</field>
+        <field name="model_id" ref="model_active_meals"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_user'))]"/>
+    </record>
+
+    <!-- Caterer: can only see active meals linked to their company's menus -->
+    <record id="active_meals_rule_caterer" model="ir.rule">
+        <field name="name">Active Meals: Caterer Own Company Only</field>
+        <field name="model_id" ref="model_active_meals"/>
+        <field name="domain_force">[('meal_menu.company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_caterer'))]"/>
+    </record>
+
+</odoo>

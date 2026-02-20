@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem id="customer_plans_menu" name="Customer Plans" action="fewa_user_meal_plan_action" web_icon="fewa_orders,static/src/img/package.png" sequence="60"/>
-    <menuitem id="menu_fewa_orders" name="Orders"  web_icon="fewa_orders,static/src/img/orders.png" sequence="70"/>
-    <menuitem id="menu_fewa_order_collection" name="Order Collection" action="action_fewa_order_collection" parent="menu_fewa_orders" sequence="10"/>
-    <menuitem id="menu_fewa_order_user" name="User Orders" action="fewa_user_orders_action" parent="menu_fewa_orders" sequence="20"/>
+    <menuitem id="customer_plans_menu" name="Customer Plans" action="fewa_user_meal_plan_action" web_icon="fewa_orders,static/src/img/package.png" sequence="60" groups="user_type.group_fewa_user"/>
+    <menuitem id="menu_fewa_orders" name="Orders"  web_icon="fewa_orders,static/src/img/orders.png" sequence="70" groups="user_type.group_fewa_user,user_type.group_fewa_caterer"/>
+    <menuitem id="menu_fewa_order_collection" name="Order Collection" action="action_fewa_order_collection" parent="menu_fewa_orders" sequence="10" groups="user_type.group_fewa_user,user_type.group_fewa_caterer"/>
+    <menuitem id="menu_fewa_order_user" name="User Orders" action="fewa_user_orders_action" parent="menu_fewa_orders" sequence="20" groups="user_type.group_fewa_user,user_type.group_fewa_caterer"/>
 
 </odoo>

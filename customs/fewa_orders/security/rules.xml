@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fewa_order_collection_rule_fewa_user" model="ir.rule">
+        <field name="name">Order Collection: Fewa Staff See All</field>
+        <field name="model_id" ref="model_fewa_order_collection"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_user'))]"/>
+    </record>
+
+    <record id="fewa_order_collection_rule_caterer" model="ir.rule">
+        <field name="name">Order Collection: Caterer Own Company Only</field>
+        <field name="model_id" ref="model_fewa_order_collection"/>
+        <field name="domain_force">[('order_from', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_caterer'))]"/>
+    </record>
+
+
+  <record id="fewa_order_fewa_user_orders_rule_fewa_user" model="ir.rule">
+        <field name="name">Order fewa.user.orders: Fewa Staff See All</field>
+        <field name="model_id" ref="model_fewa_user_orders"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_user'))]"/>
+    </record>
+
+    <record id="fewa_order_fewa_user_orders_rule_caterer" model="ir.rule">
+        <field name="name">Order fewa.user.orders: Caterer Own Company Only</field>
+        <field name="model_id" ref="model_fewa_user_orders"/>
+        <field name="domain_force">[('order_from', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('user_type.group_fewa_caterer'))]"/>
+    </record>
+
+</odoo>

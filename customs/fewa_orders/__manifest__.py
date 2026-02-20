@@ -9,7 +9,8 @@
         "views/menu.xml",
 
         "data/collectio_sequence.xml",
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "security/rules.xml",
     ],
     "assets":{
         "web.assets_backend":[

@@ -9,7 +9,8 @@
         "views/menu.xml",
 
         "data/cron.xml",
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "security/rules.xml"
     ],
     "assets":{
         "web.assets_backend":[
